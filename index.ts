@@ -16,10 +16,9 @@ export default class Biblia {
     }
 
     /**
-     *
      * @param {Object} [options] Optional query parameters
      * @param {Number} [options.limit] - The maximum number of entries to return (all if unspecified).
-     * @return Returns an object of the different bibles and their descriptions
+     * @return A promise with an object of the different bibles and their descriptions
      */
     public getBibles(options?: getBiblesParams): Promise<Bibles> {
         let params = this.setParams(options);
@@ -31,7 +30,7 @@ export default class Biblia {
     }
 
     /**
-     * @return Returns an array of all the available bibles
+     * @return A promise with an array of all the available bibles
      */
     public getBibleNames(): Promise<string[]> {
         return new Promise((resolve, reject) => {
@@ -48,7 +47,7 @@ export default class Biblia {
      * @param {Option} [options] - Optional params
      * @param {String} [options.style] -  Style of the rendered form (short, medium, long; default long).
      * @param passage - The text to parse (required).
-     * @returns Parses the specified text as one or more Bible passages. Can also be used to render a Bible reference
+     * @returns A promise. Parses the specified text as one or more Bible passages. Can also be used to render a Bible reference
      * in short, medium, or long form.
      */
     public parseText(passage: string, options?: {style?: "short"|"medium"|"long"}) : Promise<ParsedText> {
@@ -62,10 +61,10 @@ export default class Biblia {
     }
 
     /**
-     *
      * @param {String} text - The text to parse
      * @param {Object} [options]
      * @param {Boolean} [options.tagChapters] Whether to tag references to chapters without a verse; default true
+     * @returns A promise with the comparison of the compared texts
      */
     public scanText(text: string, options: {tagChapters?: boolean}): Promise<ScannedText> {
         let params = this.setParams(options);
@@ -77,10 +76,9 @@ export default class Biblia {
     }
 
     /**
-     *
      * @param {String} firstVerse
      * @param {String} secondVerse
-     * @returns Compares two Bible references
+     * @returns A promise with the comparison two Bible references
      */
     public compare(firstVerse: string, secondVerse: string) : Promise<Comparison> {
         firstVerse = encodeURI(firstVerse);
@@ -94,8 +92,6 @@ export default class Biblia {
     }
 
     /**
-     *
-     *
      * @param {String} query - The query text
      * @param {Number} [options.limit] - The maximum number of entries to return (all if unspecified).
      * @param {Object} [options] - Optional Parameters
@@ -104,7 +100,7 @@ export default class Biblia {
      * @param {Number} [options.limit] - The maximum number of results to return (all if unspecified).
      * @param {String} [options.preview] - none, text, or html; default text.
      * @param {String} [options.sort] - 	The sort order (relevance or passage). Only valid with mode=verse. mode=fuzzy always sorts by passage.
-     * @return {Object} An object with previews of the query matches
+     * @return {Object} A promise of an object with previews of the query matches
      */
     public search(query: string, options?: searchParams) : Promise<Query> {
         let params = this.setParams(options);
@@ -131,7 +127,7 @@ export default class Biblia {
      * @param {String} [options.header] - format of the header; default empty
      * @param {String} [options.eachVerse] - Format of footer; default [VerseText]
      * @param {String} [options.footer] - Format of the footer; default empty
-     * @returns Content of a Bible.
+     * @returns A promise with contents of a Bible.
      */
     public getPassage(passage: string, options?: getPassageParams): Promise<Passage> {
         let params = this.setParams(options);
