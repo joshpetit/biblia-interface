@@ -61,7 +61,12 @@ export default class Biblia {
         })
     }
 
-
+    /**
+     *
+     * @param {String} text - The text to parse
+     * @param {Object} [options]
+     * @param {Boolean} [options.tagChapters] Whether to tag references to chapters without a verse; default true
+     */
     public scanText(text: string, options: {tagChapters?: boolean}): Promise<object> {
         let params = this.setParams(options);
         return new Promise((resolve, reject) => {
