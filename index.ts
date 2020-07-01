@@ -67,7 +67,7 @@ export default class Biblia {
      * @param {Object} [options]
      * @param {Boolean} [options.tagChapters] Whether to tag references to chapters without a verse; default true
      */
-    public scanText(text: string, options: {tagChapters?: boolean}): Promise<object> {
+    public scanText(text: string, options: {tagChapters?: boolean}): Promise<ScannedText> {
         let params = this.setParams(options);
         return new Promise((resolve, reject) => {
             fetch(`${this.baseReference}/scan.js?${params}text=${text}&key=${this.apiKey}`)
@@ -163,6 +163,14 @@ export default class Biblia {
         this.bible = bible;
     }
 
+}
+
+interface ScannedText {
+    results: {
+        passage: string,
+        textIndex: number,
+        textLength: number
+    }[]
 }
 
 interface getPassageParams {
