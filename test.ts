@@ -15,7 +15,7 @@ let bible = new biblia("61824f68b909f9567b206c3a9535b3d1", 'LEB');
 // .then(res =>{
 //     console.log(res)
 // })
-
+//
 //
 // bible.getBibleNames()
 //     .then(res => {
@@ -23,7 +23,7 @@ let bible = new biblia("61824f68b909f9567b206c3a9535b3d1", 'LEB');
 //     }).catch(err =>{
 //     console.log(err)
 // })
-
+//
 // bible.getBibles({
 //     query: "a",
 // }).then(res => {
@@ -34,6 +34,21 @@ let bible = new biblia("61824f68b909f9567b206c3a9535b3d1", 'LEB');
 //
 // bible.getBibles({
 //     limit: 2
+// }).then(res => {
+//     console.log(res);
 // })
-bible.parseText("2 kgs 3-4")
-.then(res => console.log(res));
+//
+// bible.parseText("2 kgs 3-4")
+// .then(res => console.log(res));
+//
+// bible.compare("Ge 3:4", "Ge 3:1-10")
+// .then(res => console.log(res))
+// .catch(err => console.log(err));
+//
+
+bible.getPassage("John 3:16-20", {
+    html: true,
+    style: "fullyFormattedWithFootnotes"
+}).then(res =>{
+    console.log(res)
+})

@@ -21,7 +21,7 @@ export default class Biblia {
      * @param {Number} [options.limit] - The maximum number of entries to return (all if unspecified).
      * @return Returns an object of the different bibles and their descriptions
      */
-    public getBibles(options?: {bible?: string, query?: string, strictQuery?:boolean, start?: number, limit?: number}): Promise<bibles> {
+    public getBibles(options?: getBiblesParams): Promise<Bibles> {
         let params = this.setParams(options);
         return new Promise((resolve, reject) => {
             fetch(`${this.baseReference}/find.js?${params}key=${this.apiKey}`)
@@ -48,9 +48,10 @@ export default class Biblia {
      * @param {Option} [options] - Optional params
      * @param {String} [options.style] -  Style of the rendered form (short, medium, long; default long).
      * @param passage - The text to parse (required).
-     * @returns Parses the specified text as one or more Bible passages. Can also be used to render a Bible reference in short, medium, or long form.
+     * @returns Parses the specified text as one or more Bible passages. Can also be used to render a Bible reference
+     * in short, medium, or long form.
      */
-    public parseText(passage: string, options?: {style?: "short"|"medium"|"long"}) : Promise<parsedText> {
+    public parseText(passage: string, options?: {style?: "short"|"medium"|"long"}) : Promise<ParsedText> {
         let params = this.setParams(options);
         passage = encodeURI(passage);
         return new Promise((resolve, reject) => {
@@ -60,7 +61,8 @@ export default class Biblia {
         })
     }
 
-    public scanText(text: string, options: {}): Promise<object> {
+
+    public scanText(text: string, options: {tagChapters?: boolean}): Promise<object> {
         let params = this.setParams(options);
         return new Promise((resolve, reject) => {
             fetch(`${this.baseReference}/scan.js?${params}text=${text}&key=${this.apiKey}`)
@@ -69,13 +71,21 @@ export default class Biblia {
         })
     }
 
-    public getPassage(passage: string): Promise<passage> {
-        passage = encodeURI(passage);
+    /**
+     *
+     * @param {String} firstVerse
+     * @param {String} secondVerse
+     * @returns Compares two Bible references
+     */
+    public compare(firstVerse: string, secondVerse: string) : Promise<Comparison> {
+        firstVerse = encodeURI(firstVerse);
+        secondVerse = encodeURI(secondVerse);
         return new Promise((resolve, reject) => {
-            fetch(`${this.baseReference}/content/${this.bible}.js?passage=${passage}&key=${this.apiKey}`)
+            fetch(`${this.baseReference}/compare?first=${firstVerse}&second=${secondVerse}&key=${this.apiKey}`)
                 .then(res => resolve(res.json()))
                 .catch(err => reject(err));
         })
+
     }
 
     /**
@@ -91,11 +101,42 @@ export default class Biblia {
      * @param {String} [options.sort] - 	The sort order (relevance or passage). Only valid with mode=verse. mode=fuzzy always sorts by passage.
      * @return {Object} An object with previews of the query matches
      */
-    public search(query: string, options?: {mode?: "fuzzy"|"verse", limit?:number, preview?:"none"|"text"|"html", sort?: "relevance"| "passage" , passages?: string}) : Promise<query> {
+    public search(query: string, options?: searchParams) : Promise<Query> {
         let params = this.setParams(options);
         query = encodeURI(query);
         return new Promise((resolve, reject) => {
             fetch(`${this.baseReference}/search/${this.bible}.js?query=${query}&${params}key=${this.apiKey}`)
+                .then(res => resolve(res.json()))
+                .catch(err => reject(err));
+        })
+    }
+
+    /**
+     * @param passage - The Bible passage to return
+     * @param {Object} [options]
+     * @param {String} [options.html] - HTML wrapped in JSON or simply text wrappedi n JSON
+     * @param {String} [options.style] - The name of a pre-defined style (options below).
+     * **Note: Takes precedence over the more specific options e.g. redLetter, header**
+     * @param {String} [options.formatting] - All, paragraph, character, or none. Default all
+     * @param {Boolean} [options.redLetter] -	False to remove red letter formatting for words of Christ. Default true.
+     * @param {Boolean} [options.footnotes] - True to include footnote content below the main content; default false.
+     * @param {Boolean} [options.citation] - True to include a citation below the content; default false.
+     * @param {Boolean} [options.paragraphs] - True to preserve paragraphs, false for one verse per line; default true.
+     * @param {Boolean} [options.fullText] - true to include everything, not only the biblical text; default false.
+     * @param {String} [options.header] - format of the header; default empty
+     * @param {String} [options.eachVerse] - Format of footer; default [VerseText]
+     * @param {String} [options.footer] - Format of the footer; default empty
+     * @returns Content of a Bible.
+     */
+    public getPassage(passage: string, options?: getPassageParams): Promise<Passage> {
+        let params = this.setParams(options);
+        let format = "";
+        if (options.html) {
+            format = "html.";
+        }
+        passage = encodeURI(passage);
+        return new Promise((resolve, reject) => {
+            fetch(`${this.baseReference}/content/${this.bible}.${format}js?${params}passage=${passage}&key=${this.apiKey}`)
                 .then(res => resolve(res.json()))
                 .catch(err => reject(err));
         })
@@ -113,13 +154,44 @@ export default class Biblia {
         return params;
     }
 
+    public setBible(bible: string): void {
+        this.bible = bible;
+    }
+
 }
 
-interface passage {
+interface getPassageParams {
+    style?: PassageStyles,
+    formatting?: "all" | "paragraph" | "character" | "none",
+    redLetter?: boolean,
+    footnotes?: boolean,
+    citation?: boolean,
+    paragraphs?: boolean,
+    fullText?: boolean,
+    header?: string,
+    html?: boolean
+}
+
+interface getBiblesParams {
+    bible?: string,
+    query?: string,
+    strictQuery?:boolean,
+    start?: number,
+    limit?: number
+}
+
+interface searchParams {
+    mode?: "fuzzy"|"verse",
+    limit?:number, preview?:"none"|"text"|"html",
+    sort?: "relevance"| "passage" ,
+    passages?: string
+}
+
+interface Passage {
     text: string
 }
 
-interface bibles{
+interface Bibles{
     bibles: {
         bible: string,
         title: string,
@@ -135,7 +207,7 @@ interface bibles{
     }[]
 }
 
-interface query{
+interface Query{
     resultCount: number,
     hitCount: number,
     start: number,
@@ -147,15 +219,35 @@ interface query{
 
 }
 
-interface parsedText {
+interface ParsedText {
     passage: string,
     passages: {
-      passage: string,
-      parts: {
-          book: string,
-          chapter: number,
-          verse: number,
-          endVerse: number
-      }
+        passage: string,
+        parts: {
+            book: string,
+            chapter: number,
+            verse: number,
+            endVerse: number
+        }
     }[]
 }
+
+interface Comparison {
+    "equal" : boolean,
+    "intersects" : boolean,
+    "compare" : -1 | 0 | 1,
+    "startToStart" : -1 | 0 | 1,
+    "startToEnd" : -1 | 0 | 1,
+    "endToStart" : -1 | 0 | 1,
+    "endToEnd" : -1 | 0 | 1,
+    "after" : boolean,
+    "before" : boolean,
+    "subset" : boolean,
+    "strictSubset" : boolean,
+    "superset" : boolean,
+    "strictSuperset" : boolean,
+}
+
+type PassageStyles = "fullyFormatted" | "oneVersePerLine" | "oneVersePerLineFullReference"
+    | "quotation" | "simpleParagraphs" | "bibleTextOnly" | "orationOneParagraph"
+    | "orationOneVersePerLine" | "orationBibleParagraphs" | "fullyFormattedWithFootnotes"
