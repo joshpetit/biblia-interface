@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 
 export default class Biblia {
-    private baseReference = `https://api.biblia.com/v1/bible`
+    private readonly baseReference = `https://api.biblia.com/v1/bible`
     private readonly apiKey: string;
     private bible: string;
 
@@ -169,18 +169,6 @@ interface ScannedText {
     }[]
 }
 
-interface getPassageParams {
-    style?: PassageStyles,
-    formatting?: "all" | "paragraph" | "character" | "none",
-    redLetter?: boolean,
-    footnotes?: boolean,
-    citation?: boolean,
-    paragraphs?: boolean,
-    fullText?: boolean,
-    header?: string,
-    html?: boolean
-}
-
 interface getBiblesParams {
     bible?: string,
     query?: string,
@@ -255,6 +243,18 @@ interface Comparison {
     "strictSubset" : boolean,
     "superset" : boolean,
     "strictSuperset" : boolean,
+}
+
+interface getPassageParams {
+    style?: PassageStyles,
+    formatting?: "all" | "paragraph" | "character" | "none",
+    redLetter?: boolean,
+    footnotes?: boolean,
+    citation?: boolean,
+    paragraphs?: boolean,
+    fullText?: boolean,
+    header?: string,
+    html?: boolean
 }
 
 type PassageStyles = "fullyFormatted" | "oneVersePerLine" | "oneVersePerLineFullReference"
