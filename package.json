@@ -2,9 +2,10 @@
   "name": "biblia-interface",
   "version": "1.0.0",
   "description": "An interface for interacting with the api.biblia.com",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "",
+    "build": "tsc -p"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "@types/node-fetch": "^2.5.7"
+    "@types/node-fetch": "^2.5.7",
+    "typescript": "^3.9.6"
   }
 }
