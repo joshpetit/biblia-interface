@@ -71,8 +71,11 @@ export class Biblia {
      * @param {Boolean} [options.tagChapters] Whether to tag references to chapters without a verse; default true
      * @returns A promise with the comparison of the compared texts
      */
-    public scanText(text: string, options: {tagChapters?: boolean}): Promise<ScannedText> {
-        let params = this.setParams(options);
+    public scanText(text: string, options?: {tagChapters?: boolean}): Promise<ScannedText> {
+        let params = "";
+        if (options) {
+            params = this.setParams(options);
+        }
         return new Promise((resolve, reject) => {
             fetch(`${this.baseReference}/scan.js?${params}text=${text}&key=${this.apiKey}`)
                 .then(res => resolve(res.json()))
