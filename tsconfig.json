@@ -5,6 +5,7 @@
     "target": "ES5",
     "watch": true,
     "allowJs": true,
+    "strict": true,
     "lib": [
       "dom",
       "es5",

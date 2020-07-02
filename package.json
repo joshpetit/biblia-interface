@@ -1,11 +1,11 @@
 {
   "name": "biblia-interface",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An interface for interacting with the api.biblia.com",
-  "main": "./dist/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "",
-    "build": "tsc -p"
+    "build": "tsc -p ."
   },
   "repository": {
     "type": "git",

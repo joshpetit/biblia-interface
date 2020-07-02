@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 
-export default class Biblia {
+export class Biblia {
     private readonly baseReference = `https://api.biblia.com/v1/bible`
     private readonly apiKey: string;
     private bible: string;
@@ -21,7 +21,10 @@ export default class Biblia {
      * @return A promise with an object of the different bibles and their descriptions
      */
     public getBibles(options?: getBiblesParams): Promise<Bibles> {
-        let params = this.setParams(options);
+        let params = "";
+        if (options) {
+            params = this.setParams(options);
+        }
         return new Promise((resolve, reject) => {
             fetch(`${this.baseReference}/find.js?${params}key=${this.apiKey}`)
                 .then(res => resolve(res.json()))
@@ -51,7 +54,10 @@ export default class Biblia {
      * in short, medium, or long form.
      */
     public parseText(passage: string, options?: {style?: "short"|"medium"|"long"}) : Promise<ParsedText> {
-        let params = this.setParams(options);
+        let params = "";
+        if (options) {
+            params = this.setParams(options);
+        }
         passage = encodeURI(passage);
         return new Promise((resolve, reject) => {
             fetch(`${this.baseReference}/parse?passage=${passage}&${params}key=${this.apiKey}`)
@@ -103,7 +109,10 @@ export default class Biblia {
      * @return {Object} A promise of an object with previews of the query matches
      */
     public search(query: string, options?: searchParams) : Promise<Query> {
-        let params = this.setParams(options);
+        let params = "";
+        if (options) {
+            params = this.setParams(options);
+        }
         query = encodeURI(query);
         return new Promise((resolve, reject) => {
             fetch(`${this.baseReference}/search/${this.bible}.js?query=${query}&${params}key=${this.apiKey}`)
@@ -130,10 +139,13 @@ export default class Biblia {
      * @returns A promise with contents of a Bible.
      */
     public getPassage(passage: string, options?: getPassageParams): Promise<Passage> {
-        let params = this.setParams(options);
+        let params = "";
         let format = "";
-        if (options.html) {
-            format = "html.";
+        if (options) {
+            params = this.setParams(options);
+            if (options.html) {
+                format = "html.";
+            }
         }
         passage = encodeURI(passage);
         return new Promise((resolve, reject) => {
@@ -143,7 +155,7 @@ export default class Biblia {
         })
     }
 
-    private setParams(options: object): string {
+    private setParams(options: {[index: string] :any}): string {
         let params = "";
         if (options) {
             Object.keys(options).forEach(key => {
