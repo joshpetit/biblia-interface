@@ -10,7 +10,7 @@ export class Biblia {
      * @param apiKey Visit https://bibliaapi.com/ to active an API key
      * @param [bible = "asv"]
      */
-    constructor(apiKey: string, bible: string = "asv") {
+    constructor(apiKey: string, bible: BibleVersions) {
         this.apiKey = apiKey;
         this.bible = bible;
     }
@@ -167,7 +167,7 @@ export class Biblia {
         return params;
     }
 
-    public setBible(bible: string): void {
+    public setBible(bible: BibleVersions): void {
         this.bible = bible;
     }
 
@@ -272,3 +272,8 @@ interface getPassageParams {
 type PassageStyles = "fullyFormatted" | "oneVersePerLine" | "oneVersePerLineFullReference"
     | "quotation" | "simpleParagraphs" | "bibleTextOnly" | "orationOneParagraph"
     | "orationOneVersePerLine" | "orationBibleParagraphs" | "fullyFormattedWithFootnotes"
+
+type BibleVersions = "darby" | "asv" | "ar-vandyke" | "byz" | "elzevir" | "emphbbl"
+    | "it-diodati1649" | "kjv" | "kjv1900" | "lsg" | "eo-zamenbib" | "leb" | "scrmorph"
+| "fi-raamattu" | "rvr60" | "rva" | "bb-sbb-rusbt" | "scr" | "tr1894mr" | "svv"
+| "stephens" | "tanakh" | "wbtc-ptbrnt" | "wh1881mr" | "ylt";
