@@ -7,10 +7,10 @@ export class Biblia {
 
     /**
      * constructor
-     * @param apiKey Visit https://bibliaapi.com/ to active an API key
+     * @param apiKey Visit https://bibliaapi.com/docs/API_Keys to active an API key
      * @param [bible = "asv"]
      */
-    constructor(apiKey: string, bible: BibleVersions) {
+    constructor(apiKey: string, bible: BibleVersions = "asv") {
         this.apiKey = apiKey;
         this.bible = bible;
     }
