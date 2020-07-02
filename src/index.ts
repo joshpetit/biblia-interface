@@ -33,7 +33,7 @@ export class Biblia {
     }
 
     /**
-     * @return A promise with an array of all the available bibles
+     * @returns A promise with an array of all the available bibles
      */
     public getBibleNames(): Promise<string[]> {
         return new Promise((resolve, reject) => {
@@ -46,7 +46,6 @@ export class Biblia {
     }
 
     /**
-     *
      * @param {Option} [options] - Optional params
      * @param {String} [options.style] -  Style of the rendered form (short, medium, long; default long).
      * @param passage - The text to parse (required).
@@ -275,5 +274,5 @@ type PassageStyles = "fullyFormatted" | "oneVersePerLine" | "oneVersePerLineFull
 
 type BibleVersions = "darby" | "asv" | "ar-vandyke" | "byz" | "elzevir" | "emphbbl"
     | "it-diodati1649" | "kjv" | "kjv1900" | "lsg" | "eo-zamenbib" | "leb" | "scrmorph"
-| "fi-raamattu" | "rvr60" | "rva" | "bb-sbb-rusbt" | "scr" | "tr1894mr" | "svv"
-| "stephens" | "tanakh" | "wbtc-ptbrnt" | "wh1881mr" | "ylt";
+    | "fi-raamattu" | "rvr60" | "rva" | "bb-sbb-rusbt" | "scr" | "tr1894mr" | "svv"
+    | "stephens" | "tanakh" | "wbtc-ptbrnt" | "wh1881mr" | "ylt";
