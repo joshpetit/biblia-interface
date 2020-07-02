@@ -23,7 +23,7 @@ export class Biblia {
     public getBibles(options?: getBiblesParams): Promise<Bibles> {
         let params = "";
         if (options) {
-            params = this.setParams(options);
+            params = setParams(options);
         }
         return new Promise((resolve, reject) => {
             fetch(`${this.baseReference}/find.js?${params}key=${this.apiKey}`)
@@ -55,7 +55,7 @@ export class Biblia {
     public parseText(passage: string, options?: {style?: "short"|"medium"|"long"}) : Promise<ParsedText> {
         let params = "";
         if (options) {
-            params = this.setParams(options);
+            params = setParams(options);
         }
         passage = encodeURI(passage);
         return new Promise((resolve, reject) => {
@@ -74,7 +74,7 @@ export class Biblia {
     public scanText(text: string, options?: {tagChapters?: boolean}): Promise<ScannedText> {
         let params = "";
         if (options) {
-            params = this.setParams(options);
+            params = setParams(options);
         }
         return new Promise((resolve, reject) => {
             fetch(`${this.baseReference}/scan.js?${params}text=${text}&key=${this.apiKey}`)
@@ -113,7 +113,7 @@ export class Biblia {
     public search(query: string, options?: searchParams) : Promise<Query> {
         let params = "";
         if (options) {
-            params = this.setParams(options);
+            params = setParams(options);
         }
         query = encodeURI(query);
         return new Promise((resolve, reject) => {
@@ -144,7 +144,7 @@ export class Biblia {
         let params = "";
         let format = "";
         if (options) {
-            params = this.setParams(options);
+            params = setParams(options);
             if (options.html) {
                 format = "html.";
             }
@@ -157,23 +157,25 @@ export class Biblia {
         })
     }
 
-    private setParams(options: {[index: string] :any}): string {
-        let params = "";
-        if (options) {
-            Object.keys(options).forEach(key => {
-                if (key) {
-                    params = `${params}&${key}=${options[key]}&`
-                }
-            })
-        }
-        return params;
-    }
 
     public setBible(bible: BibleVersions): void {
         this.bible = bible;
     }
 
 }
+
+function setParams(options: {[index: string] :any}): string {
+    let params = "";
+    if (options) {
+        Object.keys(options).forEach(key => {
+            if (key) {
+                params = `${params}&${key}=${options[key]}&`
+            }
+        })
+    }
+    return params;
+}
+
 
 interface ScannedText {
     results: {
