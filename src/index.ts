@@ -99,7 +99,7 @@ export class Biblia {
     /**
      * @param {String} query - The query text
      * @param {Object} [options] - Optional Parameters
-     * @return {Object} A promise of an object with previews of the query matches
+     * @return  A promise of an object with previews of the query matches
      */
     public search(query: string, options?: searchParams) : Promise<Query> {
         let params = "";
@@ -136,7 +136,10 @@ export class Biblia {
         })
     }
 
-
+    /**
+     *
+     * @param {String} bible - The bible version to set the interface to.
+     */
     public setBible(bible: BibleVersions): void {
         this.bible = bible;
     }
