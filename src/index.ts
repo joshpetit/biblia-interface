@@ -70,7 +70,7 @@ export class Biblia {
      * @param {Object} [options] Optional parameters
      * @returns A promise with the comparison of the compared texts
      */
-    public scanText(text: string, options?: {tagChapters?: boolean}): Promise<ScannedText> {
+    public scanText(text: string, options?: scanTextParams): Promise<ScannedText> {
         let params = "";
         if (options) {
             params = setParams(options);
@@ -170,7 +170,7 @@ interface scanTextParams {
     /**
      * Whether to tag references to chapters without a verse; default true
      */
-    tagChapters: boolean;
+    tagChapters?: boolean;
 }
 
 interface getBiblesParams {
