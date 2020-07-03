@@ -46,13 +46,12 @@ export class Biblia {
     }
 
     /**
-     * @param {Option} [options] - Optional params
-     * @param {String} [options.style] -  Style of the rendered form (short, medium, long; default long).
      * @param passage - The text to parse (required).
-     * @returns A promise. Parses the specified text as one or more Bible passages. Can also be used to render a Bible reference
-     * in short, medium, or long form.
+     * @param {Option} [options] - Optional params
+     * @returns A promise. Parses the specified text as one or more Bible passages.
+     * Can also be used to render a Bible reference in short, medium, or long form.
      */
-    public parseText(passage: string, options?: {style?: "short"|"medium"|"long"}) : Promise<ParsedText> {
+    public parseText(passage: string, options?: parseTextParams) : Promise<ParsedText> {
         let params = "";
         if (options) {
             params = setParams(options);
@@ -155,6 +154,13 @@ function setParams(options: {[index: string] :any}): string {
         })
     }
     return params;
+}
+
+interface parseTextParams {
+    /**
+     * Style of the rendered form (short, medium, long; default long).
+     */
+    style?: "short" | "medium" | "long"
 }
 
 
