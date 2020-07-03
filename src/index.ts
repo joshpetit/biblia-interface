@@ -102,10 +102,6 @@ export class Biblia {
     /**
      * @param {String} query - The query text
      * @param {Object} [options] - Optional Parameters
-     * @param {Number} [options.start] -
-     * @param {Number} [options.limit] - The maximum number of results to return (all if unspecified).
-     * @param {String} [options.preview] - none, text, or html; default text.
-     * @param {String} [options.sort] - 	The sort order (relevance or passage). Only valid with mode=verse. mode=fuzzy always sorts by passage.
      * @return {Object} A promise of an object with previews of the query matches
      */
     public search(query: string, options?: searchParams) : Promise<Query> {
@@ -180,11 +176,21 @@ interface getBiblesParams {
 }
 
 interface searchParams {
+    /**
+     * Verse or fuzzy; default verse.
+     */
     mode?: "fuzzy"|"verse",
     /**
      * The maximum number of entries to return (all if unspecified).
      */
-    limit?:number, preview?:"none"|"text"|"html",
+    limit?:number,
+    /**
+     * none, text, or html; default text.
+     */
+    preview?:"none"|"text"|"html",
+    /**
+     * The sort order (relevance or passage). **Only valid with mode=verse.** mode=fuzzy always sorts by passage.
+     */
     sort?: "relevance"| "passage" ,
     /**
      * The passages to search in (e.g. "Matthew-John"). **Only valid with mode=verse**.
@@ -193,7 +199,7 @@ interface searchParams {
     /**
      * The zero-based index of the first result to return (default 0).
      */
-    start: number
+    start?: number
 }
 
 interface Passage {
@@ -298,11 +304,11 @@ interface getPassageParams {
     /**
      * Format of footer; default [VerseText]
      */
-    eachVerse: string,
+    eachVerse?: string,
     /**
      * Format of the footer; default empty
      */
-    footer: string
+    footer?: string
 }
 
 type PassageStyles = "fullyFormatted" | "oneVersePerLine" | "oneVersePerLineFullReference"
