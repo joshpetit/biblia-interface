@@ -67,8 +67,7 @@ export class Biblia {
 
     /**
      * @param {String} text - The text to parse
-     * @param {Object} [options]
-     * @param {Boolean} [options.tagChapters] Whether to tag references to chapters without a verse; default true
+     * @param {Object} [options] Optional parameters
      * @returns A promise with the comparison of the compared texts
      */
     public scanText(text: string, options?: {tagChapters?: boolean}): Promise<ScannedText> {
@@ -84,8 +83,8 @@ export class Biblia {
     }
 
     /**
-     * @param {String} firstVerse
-     * @param {String} secondVerse
+     * @param {String} firstVerse The first verse to compare
+     * @param {String} secondVerse The second verse to compare
      * @returns A promise with the comparison two Bible references
      */
     public compare(firstVerse: string, secondVerse: string) : Promise<Comparison> {
@@ -165,6 +164,13 @@ interface ScannedText {
         textIndex: number,
         textLength: number
     }[]
+}
+
+interface scanTextParams {
+    /**
+     * Whether to tag references to chapters without a verse; default true
+     */
+    tagChapters: boolean;
 }
 
 interface getBiblesParams {
