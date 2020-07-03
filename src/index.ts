@@ -17,7 +17,6 @@ export class Biblia {
 
     /**
      * @param {Object} [options] Optional query parameters
-     * @param {Number} [options.limit] - The maximum number of entries to return (all if unspecified).
      * @return A promise with an object of the different bibles and their descriptions
      */
     public getBibles(options?: getBiblesParams): Promise<Bibles> {
@@ -180,10 +179,25 @@ interface scanTextParams {
 }
 
 interface getBiblesParams {
+    /**
+     * 	The ID of the Bible (e.g. "KJV").
+     */
     bible?: string,
+    /**
+     * 	The query that matches the Bibles to return.
+     */
     query?: string,
+    /**
+     *  The strict query (words only match title, abbreviation, and author) that matches the Bibles to return.
+     */
     strictQuery?:boolean,
+    /**
+     *  The zero-based index of the first entry to return (default 0).
+     */
     start?: number,
+    /**
+     * The maximum number of entries to return (all if unspecified).
+     */
     limit?: number
 }
 
