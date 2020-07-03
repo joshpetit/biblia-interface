@@ -101,10 +101,8 @@ export class Biblia {
 
     /**
      * @param {String} query - The query text
-     * @param {Number} [options.limit] - The maximum number of entries to return (all if unspecified).
      * @param {Object} [options] - Optional Parameters
-     * @param {String} [options.passages] - The passages to search in (e.g. "Matthew-John"). Only valid with mode=verse.
-     * @param {Number} [options.start] - The zero-based index of the first result to return (default 0).
+     * @param {Number} [options.start] -
      * @param {Number} [options.limit] - The maximum number of results to return (all if unspecified).
      * @param {String} [options.preview] - none, text, or html; default text.
      * @param {String} [options.sort] - 	The sort order (relevance or passage). Only valid with mode=verse. mode=fuzzy always sorts by passage.
@@ -126,19 +124,7 @@ export class Biblia {
     /**
      * @param passage - The Bible passage to return
      * @param {Object} [options]
-     * @param {String} [options.html] - HTML wrapped in JSON or simply text wrappedi n JSON
-     * @param {String} [options.style] - The name of a pre-defined style (options below).
-     * **Note: Takes precedence over the more specific options e.g. redLetter, header**
-     * @param {String} [options.formatting] - All, paragraph, character, or none. Default all
-     * @param {Boolean} [options.redLetter] -	False to remove red letter formatting for words of Christ. Default true.
-     * @param {Boolean} [options.footnotes] - True to include footnote content below the main content; default false.
-     * @param {Boolean} [options.citation] - True to include a citation below the content; default false.
-     * @param {Boolean} [options.paragraphs] - True to preserve paragraphs, false for one verse per line; default true.
-     * @param {Boolean} [options.fullText] - true to include everything, not only the biblical text; default false.
-     * @param {String} [options.header] - format of the header; default empty
-     * @param {String} [options.eachVerse] - Format of footer; default [VerseText]
-     * @param {String} [options.footer] - Format of the footer; default empty
-     * @returns A promise with contents of a Bible.
+     * @returns A promise with contents of a the Bible.
      */
     public getPassage(passage: string, options?: getPassageParams): Promise<Passage> {
         let params = "";
@@ -195,9 +181,19 @@ interface getBiblesParams {
 
 interface searchParams {
     mode?: "fuzzy"|"verse",
+    /**
+     * The maximum number of entries to return (all if unspecified).
+     */
     limit?:number, preview?:"none"|"text"|"html",
     sort?: "relevance"| "passage" ,
+    /**
+     * The passages to search in (e.g. "Matthew-John"). **Only valid with mode=verse**.
+     */
     passages?: string
+    /**
+     * The zero-based index of the first result to return (default 0).
+     */
+    start: number
 }
 
 interface Passage {
@@ -262,15 +258,51 @@ interface Comparison {
 }
 
 interface getPassageParams {
+    /**
+     * The name of a pre-defined style
+     * **Note: Takes precedence over the more specific options e.g. redLetter, header**
+     */
     style?: PassageStyles,
+    /**
+     * All, paragraph, character, or none. Default all
+     */
     formatting?: "all" | "paragraph" | "character" | "none",
+    /**
+     * False to remove red letter formatting for words of Christ. Default true.
+     */
     redLetter?: boolean,
+    /**
+     * True to include footnote content below the main content; default false.
+     */
     footnotes?: boolean,
+    /**
+     * True to include a citation below the content; default false.
+     */
     citation?: boolean,
+    /**
+     * True to preserve paragraphs, false for one verse per line; default true.
+     */
     paragraphs?: boolean,
+    /**
+     * True to include everything, not only the biblical text; default false.
+     */
     fullText?: boolean,
+    /**
+     * Format of the header; default empty
+     */
     header?: string,
-    html?: boolean
+    /**
+     * HTML wrapped in JSON or simply text wrapped in JSON
+     */
+    html?: boolean,
+    /**
+     * Format of footer; default [VerseText]
+     */
+    eachVerse: string,
+    /**
+     * Format of the footer; default empty
+     */
+    footer: string
 }
 
 type PassageStyles = "fullyFormatted" | "oneVersePerLine" | "oneVersePerLineFullReference"
