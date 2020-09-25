@@ -4,7 +4,7 @@ biblia-interface is an npm package written in TypeScript to help with easier int
 
 ### Installation
     npm install biblia-interface
-###Getting Started
+### Getting Started
 
     let  { Biblia } = require('./index.js');
     
